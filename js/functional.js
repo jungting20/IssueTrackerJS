@@ -62,22 +62,24 @@
         return reduce((obj,val) => go(val,f,push(obj)),[],coll);
     });
 
+    const baseExtend = func => (target,...objs) => reduce(reduce(func),target,map(entriesIterObj,objs));
     /* const extend = (target,...objs) => reduce((target,obj) => reduce(set,target,entriesIterObj(obj))
     ,target,objs); */
-    const extend = (target,...objs) => 
+    /* const extend = (target,...objs) => 
         //reduce((target,obj) => reduce(set,target,obj),target,map(entriesIterObj,objs));
-        reduce(reduce(set),target,map(entriesIterObj,objs));//위에서 중복되는 부분 curry2로 제거 ㅋ
-
+        reduce(reduce(set),target,map(entriesIterObj,objs));//위에서 중복되는 부분 curry2로 제거 ㅋ */
+    const extend = baseExtend(set);
+    const defaults = baseExtend((target,[k,v]) => target.hasOwnProperty(k) ? target : set(target,k,v));
     //extend({},entriesIterObj({a:1}),entriesIterObj({b:1}),entriesIterObj({c:1}))
     //extend({},{a:1, d:5},{b:2},{c:5}); 접고 접어야함그래서 리듀스 두번 ㅋ 생각을 항상 해줘야 함
 
     //extend({a:1},{a:5,b:2},{b:5}) {a:5,b:5}
     //defaults({a:1},{a:5,b:2},{b:5}) {a:1,b:5}
 
-    const defaults = (target,...objs) => 
+    /* const defaults = (target,...objs) => 
         reduce(reduce(
             (target,[k,v]) => target.hasOwnProperty(k) ? target : set(target,k,v)
-            ),target,map(entriesIterObj,objs));
+            ),target,map(entriesIterObj,objs)); */
 
 
 
