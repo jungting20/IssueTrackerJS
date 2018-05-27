@@ -38,7 +38,7 @@
     $.val = el => el.value;
     
     
-    $.addEvent($('.create'),'click',pipe(
+    $.on($('.create'),'click',pipe(
             tmpl,
             $.el,
             $.append($('body')),

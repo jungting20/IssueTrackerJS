@@ -21,29 +21,30 @@
     $.append = curry2((parent,element) => parent.appendChild(element));
     //appendChild 는 리턴값이 element 이거임
 
-    $.addEvent = (target,eventName,f) => target.addEventListener(eventName,f) ;
+    addEvent = (target,eventName,f) => target.addEventListener(eventName,f) ;
 
  /*    const find = curry2((f,coll) => {
         for(var val of coll) if(f(val)) return val;
     }); */
 
 
-    $.on = function(delegateTarget, eventName,sel,f) {
-        if (typeof sel =='string') return $.addEvent(...arguments);
-        //if(arguments.length == 3) return delegateTarget => $.on(delegateTarget,...arguments);뺏음
+    $.on = function(el, eventName,sel,f) {
+        if (typeof el == 'string') return el => $.on(el,...arguments);
+        if (typeof sel !='string') return addEvent(...arguments);
+        //if(arguments.length == 3) return el => $.on(el,...arguments);뺏음
             //var args = arguments;
-        /*  return function(delegateTarget){
+        /*  return function(el){
             console.log(arguments);
-            return $.on(delegateTarget,...args);
+            return $.on(el,...args);
         } */  
         //화살표함수는 arguments 이거를ㅇ 바인딩하지 않음 이게 다른점임!!! 후
         //위에처럼 짜야하는걸 화살표함수로하면 아래처럼가능 그니까 arguments 공유가능 원래안되는데 ㅋ
 
-        delegateTarget.addEventListener(eventName, e => go(
-                delegateTarget,
+        el.addEventListener(eventName, e => go(
+                el,
                 $.findAll(sel),
                 find(el => el.contains(e.target)),
-                currentTarget => currentTarget && f(defaults({originalEvent : e,currentTarget,delegateTarget},e))
+                ct => ct && f(defaults({originalEvent : e,currentTarget:ct,delegateTarget:el},e))
             ));
     };  
         //$.on('click',f)();
@@ -52,9 +53,9 @@
         //$.on(el,'click',f);
         //$.on(el,'click','ul li',f);
 
-            /* const currentTarget = find(el => el.contains(e.target),$.findAll(sel,delegateTarget));
+            /* const currentTarget = find(el => el.contains(e.target),$.findAll(sel,el));
             if(currentTarget) {
-            f(defaults({originalEvent : e,currentTarget,delegateTarget},e));
+            f(defaults({originalEvent : e,currentTarget,el},e));
             } */
             //if(currentTarget) f(Object.assign({ currentTarget, originalEvent : e },e));
             //이거 이렇게하면 변수명하고 그 값이 변수명:값 객체로 만들어짐
@@ -68,17 +69,17 @@
             /* const newEvent = {};
             for (const key in e) newEvent[key] = e[key]; */
             // 위에 포문은 객체복사과정 2시간부터 였음
-            //Object.assign(newEvent,{originalEvent : e,currentTarget,delegateTarget});
+            //Object.assign(newEvent,{originalEvent : e,currentTarget,el});
             //const newEvent = reduce(set,{},entriesIterObj(e))
-            //Object.assign(reduce(set,{},entriesIterObj(e)),{originalEvent : e,currentTarget,delegateTarget});
+            //Object.assign(reduce(set,{},entriesIterObj(e)),{originalEvent : e,currentTarget,el});
             //객체복사 버전 2
             /* const newEvent = Object.assign(reduce(set,{},
             entriesIterObj(e)),
-            {originalEvent : e,currentTarget,delegateTarget}) */
-            //f(extend({},e,{originalEvent : e,currentTarget,delegateTarget}));
+            {originalEvent : e,currentTarget,el}) */
+            //f(extend({},e,{originalEvent : e,currentTarget,el}));
              
 /* 
-            const newEvent = extend({},e,{originalEvent : e,currentTarget,delegateTarget});
+            const newEvent = extend({},e,{originalEvent : e,currentTarget,el});
             f(newEvent); */
             //이벤트복사
 
