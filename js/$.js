@@ -29,7 +29,8 @@
 
 
     $.on = function(delegateTarget, eventName,sel,f) {
-        if(arguments.length == 3) return delegateTarget => $.on(delegateTarget,...arguments);
+        if (typeof sel =='string') return $.addEvent(...arguments);
+        //if(arguments.length == 3) return delegateTarget => $.on(delegateTarget,...arguments);뺏음
             //var args = arguments;
         /*  return function(delegateTarget){
             console.log(arguments);
