@@ -18,10 +18,19 @@
     parent.innerHTML = html;
     return parent.children.length == 1 ? parent.children[0] : parent.children;
     };
-    $.append = curry2((parent,element) => parent.appendChild(element));
+
+
+    //$.append = curry2((parent,element) => parent.appendChild(element));
+    //const addEvent = (target,eventName,f) => target.addEventListener(eventName,f) ;
+    //위 두개는 공통점이있음 첫번쨰인자의 메서드로 나머지 인자를 실행함! 이거를 찾아내서 만든게
+    //아래 method로 추상해 준거임 그래서
+    //비슷한 형식은 다 이걸로 갖다 쓸 수 있다
+    const method = name => (obj,..._) => obj[name](..._);
+
+    $.append = curry2(method('appendChild'));
     //appendChild 는 리턴값이 element 이거임
 
-    addEvent = (target,eventName,f) => target.addEventListener(eventName,f) ;
+    const addEvent = method('addEventListener');
 
  /*    const find = curry2((f,coll) => {
         for(var val of coll) if(f(val)) return val;
