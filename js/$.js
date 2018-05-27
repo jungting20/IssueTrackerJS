@@ -59,10 +59,10 @@
             //const newEvent = reduce(set,{},entriesIterObj(e))
             //Object.assign(reduce(set,{},entriesIterObj(e)),{originalEvent : e,currentTarget,delegateTarget});
             //객체복사 버전 2
-            const newEvent = Object.assign(reduce(set,{},
+            /* const newEvent = Object.assign(reduce(set,{},
             entriesIterObj(e)),
-            {originalEvent : e,currentTarget,delegateTarget})
-            f(newEvent);
+            {originalEvent : e,currentTarget,delegateTarget}) */
+            f(extend({},e,{originalEvent : e,currentTarget,delegateTarget}));
             }; 
 /* 
             const newEvent = extend({},e,{originalEvent : e,currentTarget,delegateTarget});
