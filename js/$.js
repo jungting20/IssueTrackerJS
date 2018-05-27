@@ -1,7 +1,7 @@
 !function() {
     
     //functional.js에 window.Functional 에 객체로 등록 되어있음 ㅋ 그걸 ecma6에서는 이렇게 뺴다 쓸 수 있다.!
-    const { curry2,find,reduce,entriesIterObj,set,extend,map } = Functional;
+    const { curry2,find,reduce,entriesIterObj,set,extend,map,defaults } = Functional;
 
 
     const baseSel = method => (sel,parent = document) => parent[method](sel);

@@ -71,8 +71,18 @@
     //extend({},entriesIterObj({a:1}),entriesIterObj({b:1}),entriesIterObj({c:1}))
     //extend({},{a:1, d:5},{b:2},{c:5}); 접고 접어야함그래서 리듀스 두번 ㅋ 생각을 항상 해줘야 함
 
+    //extend({a:1},{a:5,b:2},{b:5}) {a:5,b:5}
+    //defaults({a:1},{a:5,b:2},{b:5}) {a:1,b:5}
+
+    const defaults = (target,...objs) => 
+        reduce(reduce(
+            (target,[k,v]) => target.hasOwnProperty(k) ? target : set(target,k,v)
+            ),target,map(entriesIterObj,objs));
+
+
+
     window.Functional = {
-        curry2,pipe,reduce,go,find,valuesIterObj,iterColl,entriesIterObj,set,extend,map
+        curry2,pipe,reduce,go,find,valuesIterObj,iterColl,entriesIterObj,set,extend,map,defaults
     }
     Object.assign(window, window.Functional);
 
