@@ -1,7 +1,7 @@
 !function() {
     
     //functional.js에 window.Functional 에 객체로 등록 되어있음 ㅋ 그걸 ecma6에서는 이렇게 뺴다 쓸 수 있다.!
-    const { curry2,find,reduce,entriesIterObj } = Functional;
+    const { curry2,find,reduce,entriesIterObj,set,extend,map } = Functional;
 
 
     const baseSel = method => (sel,parent = document) => parent[method](sel);
@@ -23,9 +23,9 @@
 
     $.addEvent = (target,eventName,f) => target.addEventListener(eventName,f) ;
 
-    const find = curry2((f,coll) => {
+ /*    const find = curry2((f,coll) => {
         for(var val of coll) if(f(val)) return val;
-    });
+    }); */
 
 
     $.on = function(delegateTarget, eventName,sel,f) {
@@ -52,19 +52,21 @@
             //e에는 이미 currentTarget 라는 프로퍼티가있음
             if(currentTarget) {
 
-            const newEvent = {};
-            for (const key in e) newEvent[key] = e[key];
+            /* const newEvent = {};
+            for (const key in e) newEvent[key] = e[key]; */
             // 위에 포문은 객체복사과정 2시간부터 였음
-
-            const newEvent = reduce((newEvent,[k,v]) => {
-                newEvent[k] = v;
-                return newEvent;    
-            },{},entriesIterObj(e))
-
-            Object.assign(newEvent,{originalEvent : e,currentTarget,delegateTarget});
+            //Object.assign(newEvent,{originalEvent : e,currentTarget,delegateTarget});
+            //const newEvent = reduce(set,{},entriesIterObj(e))
+            //Object.assign(reduce(set,{},entriesIterObj(e)),{originalEvent : e,currentTarget,delegateTarget});
+            //객체복사 버전 2
+            const newEvent = Object.assign(reduce(set,{},
+            entriesIterObj(e)),
+            {originalEvent : e,currentTarget,delegateTarget})
             f(newEvent);
-
             }; 
+/* 
+            const newEvent = extend({},e,{originalEvent : e,currentTarget,delegateTarget});
+            f(newEvent); */
             //이벤트복사
         });
     };  

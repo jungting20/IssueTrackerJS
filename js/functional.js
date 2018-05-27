@@ -40,13 +40,37 @@
         for(var val of coll) if(f(val)) return val;
     });
 
-    const Functional = {
-        curry2,pipe,reduce,go,find,valuesIterObj,iterColl,entriesIterObj
+    /* const set = (obj,[k,v]) => {
+                obj[k] = v;
+                return obj;    
+            }; */
+            //set({},'a',10);
+            //{a:10}
+            //set({},['a',10])
+            //{a:10} 이렇게 동작하게 하고싶음!
+            /* const set = (obj,k,v) => {
+                 return typeof k == 'string' ? (obj[k] = v, obj) : set(obj,...k);
+            }; */
+    const set = (obj,k,v) => typeof k == 'string' ? (obj[k] = v, obj) : set(obj,...k);
+    //k가 스트링이 아니면 k는 배열이란 소리니까 전개 연산자로 전개 할 수가 있음 ㅋ
+
+    const push = curry2((arr,...item) => {
+        return (arr.push(...item),arr);
+    });
+    
+    const map = curry2((f,coll) => {
+        return reduce((obj,val) => go(val,f,push(obj)),[],coll);
+    });
+
+    const extend = (target,...objs) => 
+        reduce((target,obj) => reduce(set,target,entriesIterObj(obj)),target,objs);
+
+
+
+    window.Functional = {
+        curry2,pipe,reduce,go,find,valuesIterObj,iterColl,entriesIterObj,set,extend,map
     }
-
-
-    window.Functional = Functional;
-    //Object.assign(window, Functional);
+    Object.assign(window, window.Functional);
 
 
 }();
