@@ -1,4 +1,9 @@
 !function() {
+    
+    //functional.js에 window.Functional 에 객체로 등록 되어있음 ㅋ 그걸 ecma6에서는 이렇게 뺴다 쓸 수 있다.!
+    const { curry2,find,reduce,entriesIterObj } = Functional;
+
+
     const baseSel = method => (sel,parent = document) => parent[method](sel);
 
     const $ = baseSel('querySelector');
@@ -46,13 +51,20 @@
             //console.log(e);
             //e에는 이미 currentTarget 라는 프로퍼티가있음
             if(currentTarget) {
+
             const newEvent = {};
             for (const key in e) newEvent[key] = e[key];
             // 위에 포문은 객체복사과정 2시간부터 였음
 
+            const newEvent = reduce((newEvent,[k,v]) => {
+                newEvent[k] = v;
+                return newEvent;    
+            },{},entriesIterObj(e))
+
             Object.assign(newEvent,{originalEvent : e,currentTarget,delegateTarget});
             f(newEvent);
-                }; 
+
+            }; 
             //이벤트복사
         });
     };  
