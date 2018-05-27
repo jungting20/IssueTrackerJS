@@ -45,7 +45,12 @@
                 currentTarget => currentTarget && f(defaults({originalEvent : e,currentTarget,delegateTarget},e))
             ));
     };  
-            
+        //$.on('click',f)();
+        //$.on('click','ul li',f)    
+
+        //$.on(el,'click',f);
+        //$.on(el,'click','ul li',f);
+
             /* const currentTarget = find(el => el.contains(e.target),$.findAll(sel,delegateTarget));
             if(currentTarget) {
             f(defaults({originalEvent : e,currentTarget,delegateTarget},e));
@@ -70,14 +75,11 @@
             entriesIterObj(e)),
             {originalEvent : e,currentTarget,delegateTarget}) */
             //f(extend({},e,{originalEvent : e,currentTarget,delegateTarget}));
-
-
              
 /* 
             const newEvent = extend({},e,{originalEvent : e,currentTarget,delegateTarget});
             f(newEvent); */
             //이벤트복사
-
 
     window.$ = $;
 }();
