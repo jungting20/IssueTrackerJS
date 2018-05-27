@@ -62,10 +62,12 @@
         return reduce((obj,val) => go(val,f,push(obj)),[],coll);
     });
 
+    /* const extend = (target,...objs) => reduce((target,obj) => reduce(set,target,entriesIterObj(obj))
+    ,target,objs); */
     const extend = (target,...objs) => 
-        reduce((target,obj) => reduce(set,target,entriesIterObj(obj)),target,objs);
+        reduce((target,obj) => reduce(set,target,obj),target,map(entriesIterObj,objs));
 
-
+    //extend({},entriesIterObj({a:1}),entriesIterObj({b:1}),entriesIterObj({c:1}))
 
     window.Functional = {
         curry2,pipe,reduce,go,find,valuesIterObj,iterColl,entriesIterObj,set,extend,map
