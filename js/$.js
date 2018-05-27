@@ -29,7 +29,7 @@
 
 
     $.on = function(delegateTarget, eventName,sel,f) {
-        if(arguments.length == 3) {
+        if(arguments.length == 3) return delegateTarget => $.on(delegateTarget,...arguments);
             //var args = arguments;
         /*  return function(delegateTarget){
             console.log(arguments);
@@ -37,11 +37,19 @@
         } */  
         //화살표함수는 arguments 이거를ㅇ 바인딩하지 않음 이게 다른점임!!! 후
         //위에처럼 짜야하는걸 화살표함수로하면 아래처럼가능 그니까 arguments 공유가능 원래안되는데 ㅋ
-        return delegateTarget => $.on(delegateTarget,...arguments);
-        }
 
-        delegateTarget.addEventListener(eventName, function(e){
-            const currentTarget = find(el => el.contains(e.target),$.findAll(sel,delegateTarget));
+        delegateTarget.addEventListener(eventName, e => go(
+                delegateTarget,
+                $.findAll(sel),
+                find(el => el.contains(e.target)),
+                currentTarget => currentTarget && f(defaults({originalEvent : e,currentTarget,delegateTarget},e))
+            ));
+    };  
+            
+            /* const currentTarget = find(el => el.contains(e.target),$.findAll(sel,delegateTarget));
+            if(currentTarget) {
+            f(defaults({originalEvent : e,currentTarget,delegateTarget},e));
+            } */
             //if(currentTarget) f(Object.assign({ currentTarget, originalEvent : e },e));
             //이거 이렇게하면 변수명하고 그 값이 변수명:값 객체로 만들어짐
             //e는 이벤트 객체니까 그냥 다 덮어버린다 즉 currentTarget에 이벤트가 다 들어감 원래 이벤트가 
@@ -50,7 +58,6 @@
             //저렇게 이벤트객체 자체를 쳐 합쳐서 넣어주는거임 그러면 이벤트값들ㄹ 쓸 수 있지
             //console.log(e);
             //e에는 이미 currentTarget 라는 프로퍼티가있음
-            if(currentTarget) {
 
             /* const newEvent = {};
             for (const key in e) newEvent[key] = e[key]; */
@@ -62,14 +69,14 @@
             /* const newEvent = Object.assign(reduce(set,{},
             entriesIterObj(e)),
             {originalEvent : e,currentTarget,delegateTarget}) */
-            f(extend({},e,{originalEvent : e,currentTarget,delegateTarget}));
-            }; 
+            //f(extend({},e,{originalEvent : e,currentTarget,delegateTarget}));
+
+
+             
 /* 
             const newEvent = extend({},e,{originalEvent : e,currentTarget,delegateTarget});
             f(newEvent); */
             //이벤트복사
-        });
-    };  
 
 
     window.$ = $;

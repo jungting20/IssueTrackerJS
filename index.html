@@ -45,6 +45,7 @@
            /*  $.find('.save'),
             saveBtn => saveBtn.onclick = console.log */
             $.on('click','.options .save', function(e){
+                console.log(e);
                 console.log('저장맨',{
                     name : go(e.delegateTarget,$.find('.name input'),$.val),
                     description : go(e.delegateTarget,$.find('.description textarea'),$.val)
