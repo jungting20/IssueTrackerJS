@@ -35,6 +35,19 @@
         return acc;
     });
 
+    /* const add = (a,b) => a+b;
+
+    1.go([1,2,3],
+       _ => reduce(add,10,_) 
+    );
+
+    2.go(10,
+       _ => reduce(add,_,[1,2,3]) 
+    ); 
+    화살표 함수가 충분히 간결하기 때문에 저런식으로 실행해도 충분히 쓸만함 그래서 그렇다함
+    뭐 자바스크립트는 너무 가변적이어서 curry2 정도면 된다고함 하나만 구현해서 쓰자
+    */
+
 
     const find = curry2((f,coll) => {
         for(var val of coll) if(f(val)) return val;
