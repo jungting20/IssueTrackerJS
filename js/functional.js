@@ -65,9 +65,11 @@
     /* const extend = (target,...objs) => reduce((target,obj) => reduce(set,target,entriesIterObj(obj))
     ,target,objs); */
     const extend = (target,...objs) => 
-        reduce((target,obj) => reduce(set,target,obj),target,map(entriesIterObj,objs));
+        //reduce((target,obj) => reduce(set,target,obj),target,map(entriesIterObj,objs));
+        reduce(reduce(set),target,map(entriesIterObj,objs));//위에서 중복되는 부분 curry2로 제거 ㅋ
 
     //extend({},entriesIterObj({a:1}),entriesIterObj({b:1}),entriesIterObj({c:1}))
+    //extend({},{a:1, d:5},{b:2},{c:5}); 접고 접어야함그래서 리듀스 두번 ㅋ 생각을 항상 해줘야 함
 
     window.Functional = {
         curry2,pipe,reduce,go,find,valuesIterObj,iterColl,entriesIterObj,set,extend,map
