@@ -91,7 +91,15 @@
             const newEvent = extend({},e,{originalEvent : e,currentTarget,el});
             f(newEvent); */
             //이벤트복사
+        $.attr = curry2((name,el) => el.getAttribute('name'));
+        $.val = el => el.value;
+        $.keyval =  el => ({ [$.attr('name', el)] : $.val(el) });
 
+        $.formToJSON = pipe(
+                    $.findAll('[name]'),
+                    map($.keyval),
+                    reduce(extend)
+                    );
     window.$ = $;
 }();
 
