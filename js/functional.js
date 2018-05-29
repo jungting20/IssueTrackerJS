@@ -26,13 +26,19 @@
 
     const reduce = curry2((f,acc,coll) => {
         const iter = iterColl(coll === void 0 ? acc : coll);
-        acc = coll === void 0 ? iter.next().value : acc;
+//        acc = coll === void 0 ? iter.next().value : acc;
         //오 ㅅㅂ 이렇게 하면 저기 아래 포문은 일단 1번 돈걸로침 next니까
         //[1,2,3][Symbol.iterator()]();
         //for (const item of coll) acc = f(acc,item);
         //기본적으로 for of 는 심볼.이터레이터가 있어야 돌아간다함
-        for (const item of iter) acc = f(acc,item);
-        return acc;
+        return function recur(acc){
+                for (const item of iter) {
+                    acc = f(acc,item);
+                if(acc instanceof Promise) return acc.then(recur);
+                }
+                return acc;
+        }(coll === void 0 ? iter.next().value : acc);
+
     });
 
     /* const add = (a,b) => a+b;

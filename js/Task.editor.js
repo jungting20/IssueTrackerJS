@@ -31,7 +31,6 @@ const tmpl = _ => `
             $.on('click','.options .save', e => go(
                     e.delegateTarget,
                     $.formToJSON,
-                    
                     console.log,
                   /* {
                     name : go(e.delegateTarget,$.find('.name input'),$.val),
