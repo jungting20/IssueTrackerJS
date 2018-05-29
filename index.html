@@ -28,7 +28,8 @@
         </div>
     </div>
         <div class="body">
-        <div class="name"><input type="text" class="name"></div>
+        <div class="user_name"><input type="text" name="user_name"></div>
+        <div class="name"><input type="text" name="name"></div>
         <div class="description"><textarea name="description"></textarea></div>
         </div>
     </div>
@@ -44,14 +45,19 @@
             $.append($('body')),
            /*  $.find('.save'),
             saveBtn => saveBtn.onclick = console.log */
-            $.on('click','.options .save', function(e){
-                console.log(e);
-                console.log('저장맨',{
+            $.on('click','.options .save', e => go(
+                    e.delegateTarget,
+                    $.findAll('[name]'),
+                    map(inputEl => ({ [inputEl.getAttribute('name')] : $.val(inputEl) })),
+                    reduce(extend),
+                    console.log,
+                  /* {
                     name : go(e.delegateTarget,$.find('.name input'),$.val),
                     description : go(e.delegateTarget,$.find('.description textarea'),$.val)
-                }
+                  } */
+
                 )
-                }),//커링해서 이런일이 가능함 ㅋ 이렇게 하는거군
+                ),//커링해서 이런일이 가능함 ㅋ 이렇게 하는거군
             //function(editorEl){
                 //$.find('.save')(editorEl).onclick = console.log;
                 /* go(editorEl,
