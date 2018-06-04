@@ -57,6 +57,7 @@
         e.currentTarget,
         $.closest('.task.item'),
         $.findAll('.body > *'),
+        
         loging,
     ))
 
