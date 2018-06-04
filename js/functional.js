@@ -3,10 +3,17 @@
 
 //    const pipe = (...fs) => arg => fs.reduce((arg, f) => f(arg),arg);
 
-    const pipe = (...fs) => arg => fs.reduce((arg,f) => f(arg),arg);
+    //const pipe = (...fs) => arg => fs.reduce((arg,f) => f(arg),arg);
+    const pipe = (...fs) => (arg) => reduce((arg2,f) => f(arg2),arg,fs)
 
     const go = (arg,...fs) => pipe(...fs)(arg);
+    //const go = (arg,...fs) => reduce((arg,f) => f(arg),arg,fs);
+    const tab = curry2((f,arg) => (f(arg),arg));
 
+    const loging = tab(a => console.log('값 확인',a));
+
+    const isTruthy = f => truthy => truthy && f(truthy);
+    pipe.isTruthy = (...fs) => isTruthy(pipe(...fs));
 
     function* valuesIterObj(obj){
         if(!obj) return;
@@ -20,9 +27,15 @@
             //위 함수는 리듀스를 쓰면서 키 밸류를 알고싶어서 만듬
 
 
+
+
     function iterColl(coll){
         return coll && coll[Symbol.iterator] ? coll[Symbol.iterator]() : valuesIterObj(coll);
     }
+
+
+
+
 
     const reduce = curry2((f,acc,coll) => {
         const iter = iterColl(coll === void 0 ? acc : coll);
@@ -31,13 +44,16 @@
         //[1,2,3][Symbol.iterator()]();
         //for (const item of coll) acc = f(acc,item);
         //기본적으로 for of 는 심볼.이터레이터가 있어야 돌아간다함
+        
         return function recur(acc){
+            //재귀시에 iter이 for of 이기 때문에 다시 돌때 그 다음부터돔 .next()이거때문임
+            //그래서 아마 재귀가 끝나서 처음 재귀가 시작한데로 올라오면 포문이 끝날듯 돌게 없으니
                 for (const item of iter) {
                     acc = f(acc,item);
-                if(acc instanceof Promise) return acc.then(recur);
+                if(acc instanceof Promise) {return acc.then(recur)};
                 }
                 return acc;
-        }(coll === void 0 ? iter.next().value : acc);
+        } (coll === void 0 ? iter.next().value : acc);
 
     });
 
@@ -103,7 +119,7 @@
 
 
     window.Functional = {
-        curry2,pipe,reduce,go,find,valuesIterObj,iterColl,entriesIterObj,set,extend,map,defaults
+        curry2,pipe,reduce,go,find,valuesIterObj,iterColl,entriesIterObj,set,extend,map,defaults,tab,loging
     }
     Object.assign(window, window.Functional);
 

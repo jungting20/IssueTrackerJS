@@ -21,24 +21,33 @@ const tmpl = _ => `
     </div>
     `;
     
-    const show = _ => go(
+    const show = _ => new Promise(resolve => go(
             null,
             tmpl,
             $.el,
             $.append($('#app')),
-           /*  $.find('.save'),
-            saveBtn => saveBtn.onclick = console.log */
             $.on('click','.options .save', e => go(
                     e.delegateTarget,
                     $.formToJSON,
-                    console.log,
+                    resolve,
+                    //Promise 객체의 첫번쨰 인자로 받은 resolve는 항상 마지막에 실행됨 
+                    //그니까 여기서는 인자만 받아놓고 실행은 나중에
+                    () => e.delegateTarget, //걍 위에 있는 e를 리턴해줘버림 
+                    $.remove//지운값을 리턴함
+                    //console.log
                   /* {
                     name : go(e.delegateTarget,$.find('.name input'),$.val),
                     description : go(e.delegateTarget,$.find('.description textarea'),$.val)
                   } */
-
-                )
-                ),//커링해서 이런일이 가능함 ㅋ 이렇게 하는거군
+                    )),
+//                    tab(a => console.log('아무도모르죠~',a)),
+                 $.on('click','.options .cancel', e => go(
+                    e.delegateTarget,//e.delegateTarget 이거로 자기자신을 표현
+                    $.remove,
+                    //loging,
+                    _ => resolve()
+                ))
+                //커링해서 이런일이 가능함 ㅋ 이렇게 하는거군
             //function(editorEl){
                 //$.find('.save')(editorEl).onclick = console.log;
                 /* go(editorEl,
@@ -49,7 +58,7 @@ const tmpl = _ => `
                   //  console.log(e.target,'target');
                // });
             //}
-    )
+    ));
 
     Task.editor = {
         show,

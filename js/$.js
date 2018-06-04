@@ -10,7 +10,8 @@
     $.find = curry2($);
     $.all = baseSel('querySelectorAll');
     $.findAll = curry2($.all);
-    //접근자는 웬만하면 앞에인자로두고 주 재료는 항상 뒤에 
+    //접근자는 웬만하면 앞에인자로두고 주 재료는 항상 뒤에
+    $.closest = curry2((sel,el) => el.closest(sel));
 
     //문자열을 html 로 만들기 위해 만든 함수 ㅋ 
     $.el = html => {
@@ -55,6 +56,7 @@
                 find(el => el.contains(e.target)),
                 ct => ct && f(defaults({originalEvent : e,currentTarget:ct,delegateTarget:el},e))
             ));
+        return el;
     };  
         //$.on('click',f)();
         //$.on('click','ul li',f)    
@@ -100,6 +102,9 @@
                     map($.keyval),
                     reduce(extend)
                     );
-    window.$ = $;
+        $.remove = el => el.parentNode.removeChild(el);
+
+
+        window.$ = $;
 }();
 
